@@ -8,15 +8,15 @@ import { Button } from "primereact/button";
 import { InputText } from "primereact/inputtext";
 import { InputNumber } from "primereact/inputnumber";
 
-function InsertModal() {
+function InsertModal({ isOpen, onClose }) {
   const [visible, setVisible] = useState(false);
   const [formData, setFormData] = useState({
-  student_id: "",
-  first_name: "",
-  last_name: "",
-  math_score: 0,
-  science_score: 0,
-  english_score: 0,
+    student_id: "",
+    first_name: "",
+    last_name: "",
+    math_score: 0,
+    science_score: 0,
+    english_score: 0,
   });
 
   const handleChange = (e) => {
@@ -25,36 +25,47 @@ function InsertModal() {
   };
 
   const handleNumberChange = (e, name) => {
-    setFormData({ ...formData, [name]: e.value !== null ? e.value.toString() : "0" });
+    setFormData({
+      ...formData,
+      [name]: e.value !== null ? e.value.toString() : "0",
+    });
   };
 
   const handleSubmit = () => {
     // Log form data before sending
     console.log("Form Data to be Submitted:", formData);
-  
+
     // Adjust the formData keys to match the backend expectations
-    const dataToSend = [{
-      student_id: formData.student_id,
-      first_name: formData.first_name,
-      last_name: formData.last_name,
-      math_score: parseInt(formData.math_score),
-      science_score: parseInt(formData.science_score),
-      english_score: parseInt(formData.english_score),
-    }];
-    
-  
+    const dataToSend = [
+      {
+        student_id: formData.student_id,
+        first_name: formData.first_name,
+        last_name: formData.last_name,
+        math_score: parseInt(formData.math_score),
+        science_score: parseInt(formData.science_score),
+        english_score: parseInt(formData.english_score),
+      },
+    ];
+
     // Make the API call to insert data into the database
-    axios.post('https://senior-project-production-336b.up.railway.app/create', dataToSend)
-      .then(response => {
+    axios
+      .post(
+        "https://senior-project-production-336b.up.railway.app/create",
+        dataToSend
+      )
+      .then((response) => {
         console.log("Data successfully submitted:", response.data);
         // Optionally, handle the response (e.g., show a success message)
       })
-      .catch(error => {
+      .catch((error) => {
         // Log the error response for debugging
-        console.error("Error submitting data:", error.response ? error.response.data : error.message);
+        console.error(
+          "Error submitting data:",
+          error.response ? error.response.data : error.message
+        );
         // Optionally, handle the error (e.g., show an error message)
       });
-  
+
     // Reset the form and close the dialog
     setFormData({
       student_id: "",
@@ -66,17 +77,10 @@ function InsertModal() {
     });
     setVisible(false);
   };
-  
 
   return (
-    <div
-      style={{
-        padding: "80px",
-        display: "grid",
-        gridTemplateColumns: "repeat(4, 1fr)",
-      }}
-    >
-      <Button label="Show Modal" onClick={() => setVisible(true)} />
+    <>
+    <Button label="Insert" onClick={() => setVisible(true) } />
       <Dialog
         visible={visible}
         onHide={() => setVisible(false)}
@@ -143,7 +147,7 @@ function InsertModal() {
           <Button label="Submit" onClick={handleSubmit} />
         </div>
       </Dialog>
-    </div>
+    </>
   );
 }
 

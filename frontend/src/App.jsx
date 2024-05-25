@@ -5,7 +5,7 @@ import InsertModal from "./components/InsertModal";
 function App() {
   return (
     <>
-      <InsertModal />
+      <DatabasePage/>
     </>
   );
 }
