@@ -1,18 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './DatabasePage.css';
-import InsertModal from './InsertModal'; // import Component Modal ที่สร้างไว้
+import InsertModal from './InsertModal';
+
+const initialFormData = {
+  id: '',
+  first_name: '',
+  last_name: '',
+  math_score: '',
+  science_score: '',
+  english_score: ''
+};
 
 function DatabasePage() {
   const [data, setData] = useState([]);
-  const [formData, setFormData] = useState({
-    id: '',
-    first_name: '',
-    last_name: '',
-    math_score: '',
-    science_score: '',
-    english_score: ''
-  });
+  const [formData, setFormData] = useState(initialFormData);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
@@ -26,6 +28,7 @@ function DatabasePage() {
       })
       .catch(error => {
         console.error('Error fetching data:', error);
+        alert('Failed to fetch data. Please try again later.');
       });
   };
 
@@ -38,19 +41,13 @@ function DatabasePage() {
     axios.post('https://senior-project-production-336b.up.railway.app/insertData', formData)
       .then(response => {
         console.log(response.data);
-        fetchData(); // Refresh data after insert
-        setIsModalOpen(false); // Close modal after submit
-        setFormData({
-          id: '',
-          first_name: '',
-          last_name: '',
-          math_score: '',
-          science_score: '',
-          english_score: ''
-        });
+        fetchData();
+        setIsModalOpen(false);
+        setFormData(initialFormData);
       })
       .catch(error => {
         console.error('Error inserting data:', error);
+        alert('Failed to insert data. Please try again later.');
       });
   };
 
@@ -81,7 +78,7 @@ function DatabasePage() {
           <tbody>
             {data.map((item, index) => (
               <tr key={index}>
-                <td>{item.id}</td>
+                <td>{item.student_id}</td>
                 <td>{item.first_name}</td>
                 <td>{item.last_name}</td>
                 <td>{item.math_score}</td>
@@ -92,7 +89,6 @@ function DatabasePage() {
           </tbody>
         </table>
       </div>
-      {/* ใช้ Component Modal สำหรับการ Insert ข้อมูล */}
       <InsertModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}

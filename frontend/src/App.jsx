@@ -1,12 +1,12 @@
-import React from 'react';
-import DatabasePage from './components/DatabasePage';
-import './App.css';
+import React, { useState } from "react";
+import DatabasePage from "./components/DatabasePage";
+import InsertModal from "./components/InsertModal";
 
 function App() {
   return (
-    <div className="App">
-      <DatabasePage />
-    </div>
+    <>
+      <InsertModal />
+    </>
   );
 }
 
