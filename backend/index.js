@@ -51,8 +51,7 @@ app.put("/update/:id", async (req, res) => {
     math_score,
     science_score,
     english_score
-  } =
-  req.body;
+  } = req.body;
 
   if (
     !first_name ||

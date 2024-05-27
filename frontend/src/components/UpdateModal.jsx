@@ -36,6 +36,7 @@ const UpdateModal = ({ fetchData }) => {
     axios
       .get(`https://senior-project-production-336b.up.railway.app/search/${studentId}`)
       .then((response) => {
+        console.log("Response from search:", response.data);
         if (response.data.length > 0) {
           setFormData(response.data[0]);
         } else {
@@ -43,15 +44,11 @@ const UpdateModal = ({ fetchData }) => {
         }
       })
       .catch((error) => {
-        console.error(error);
+        console.error("Error searching for student:", error);
         alert("Failed to fetch student data");
       });
   };
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-  };
+  
 
   const handleSubmit = () => {
     axios
@@ -66,6 +63,13 @@ const UpdateModal = ({ fetchData }) => {
         alert("Failed to update student. Please try again later.");
       });
   };
+  
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    console.log("Name:", name, "Value:", value);
+    setFormData({ ...formData, [name]: value });
+  };
+  
 
   return (
     <div>
