@@ -1,20 +1,16 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./DatabasePage.css";
+import "primereact/resources/themes/lara-light-indigo/theme.css";
+import "primereact/resources/primereact.min.css";
+import "primeicons/primeicons.css";
 import InsertModal from "./InsertModal";
+import UpdateModal from "./UpdateModal";
+import DeleteModal from "./DeleteModal";
+import QueryModal from "./QueryModal";
 
-const initialFormData = {
-  student_id: "",
-  first_name: "",
-  last_name: "",
-  math_score: "",
-  science_score: "",
-  english_score: "",
-};
-
-function DatabasePage() {
+const DatabasePage = () => {
   const [data, setData] = useState([]);
-  const [formData, setFormData] = useState(initialFormData);
 
   useEffect(() => {
     fetchData();
@@ -32,42 +28,19 @@ function DatabasePage() {
       });
   };
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-  };
-
-  const handleSubmit = () => {
-    axios
-      .post(
-        "https://senior-project-production-336b.up.railway.app/insertData",
-        formData
-      )
-      .then((response) => {
-        console.log(response.data);
-        fetchData();
-        setIsModalOpen(false);
-        setFormData(initialFormData);
-      })
-      .catch((error) => {
-        console.error("Error inserting data:", error);
-        alert("Failed to insert data. Please try again later.");
-      });
-  };
-
   return (
     <div className="container">
       <div className="content">
         <h2>Welcome to Database</h2>
         <div className="button-group">
-          <InsertModal />
-          <button type="button">Query</button>
-          <button type="button">Update</button>
-          <button type="button">Delete</button>
-          <button type="button" onClick={fetchData}>
+          <InsertModal fetchData={fetchData} />
+          <UpdateModal fetchData={fetchData} />
+          <DeleteModal fetchData={fetchData} />
+          <QueryModal fetchData={fetchData} />
+          <button type="button" onClick={fetchData} className="p-button-sm">
             Show Data
           </button>
-          <button type="button" onClick={() => setData([])}>
+          <button type="button" onClick={() => setData([])} className="p-button-sm">
             Clear
           </button>
         </div>
@@ -101,6 +74,6 @@ function DatabasePage() {
       </div>
     </div>
   );
-}
+};
 
 export default DatabasePage;

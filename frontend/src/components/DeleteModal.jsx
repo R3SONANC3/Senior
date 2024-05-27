@@ -1,154 +1,68 @@
-import React, { useState } from "react";
-import axios from "axios";
-import "primereact/resources/themes/lara-light-indigo/theme.css";
-import "primereact/resources/primereact.min.css";
-import "primeicons/primeicons.css";
-import { Dialog } from "primereact/dialog";
-import { Button } from "primereact/button";
-import { InputText } from "primereact/inputtext";
-import { InputNumber } from "primereact/inputnumber";
+import React, { useState } from 'react';
+import { Dialog } from 'primereact/dialog';
+import { Button } from 'primereact/button';
+import { InputText } from 'primereact/inputtext';
+import axios from 'axios';
 
-function InsertModal({}) {
-  const [visible, setVisible] = useState(false);
-  const [formData, setFormData] = useState({
-    student_id: "",
-    first_name: "",
-    last_name: "",
-    math_score: 0,
-    science_score: 0,
-    english_score: 0,
-  });
+const App = () => {
+  const [studentId, setStudentId] = useState('');
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+  const openDeleteModal = () => {
+    setIsDeleteModalOpen(true);
   };
 
-  const handleNumberChange = (e, name) => {
-    setFormData({
-      ...formData,
-      [name]: e.value !== null ? e.value.toString() : "0",
-    });
+  const closeDeleteModal = () => {
+    setIsDeleteModalOpen(false);
   };
 
-  const handleSubmit = () => {
-    // Log form data before sending
-    console.log("Form Data to be Submitted:", formData);
-
-    // Adjust the formData keys to match the backend expectations
-    const dataToSend = [
-      {
-        student_id: formData.student_id,
-        first_name: formData.first_name,
-        last_name: formData.last_name,
-        math_score: parseInt(formData.math_score),
-        science_score: parseInt(formData.science_score),
-        english_score: parseInt(formData.english_score),
-      },
-    ];
-
-    // Make the API call to insert data into the database
-    axios
-      .post(
-        "https://senior-project-production-336b.up.railway.app/create",
-        dataToSend
-      )
-      .then((response) => {
-        console.log("Data successfully submitted:", response.data);
-        // Optionally, handle the response (e.g., show a success message)
-      })
-      .catch((error) => {
-        // Log the error response for debugging
-        console.error(
-          "Error submitting data:",
-          error.response ? error.response.data : error.message
-        );
-        // Optionally, handle the error (e.g., show an error message)
+  const submitDeleteForm = async () => {
+    try {
+      const response = await axios.delete(`https://senior-project-production-336b.up.railway.app/delete/${studentId}`, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
       });
-
-    // Reset the form and close the dialog
-    setFormData({
-      student_id: "",
-      first_name: "",
-      last_name: "",
-      math_score: 0,
-      science_score: 0,
-      english_score: 0,
-    });
-    setVisible(false);
+      console.log(response.data);
+      closeDeleteModal();
+      // Reload the table data or refresh the page
+      // fetchTableData();
+    } catch (error) {
+      console.error('Error deleting student:', error);
+    }
   };
 
   return (
-    <>
-    <Button label="Insert" onClick={() => setVisible(true) } />
+    <div>
+      <Button label="Delete Student" icon="pi pi-trash" onClick={openDeleteModal} className="p-button-sm" />
+
       <Dialog
-        visible={visible}
-        onHide={() => setVisible(false)}
-        style={{ width: "50vw" }}
-        header="Insert Data"
-        draggable={false}
-        dismissableMask
+        header="Delete Student"
+        visible={isDeleteModalOpen}
+        style={{ width: '400px' }}
+        modal
+        onHide={closeDeleteModal}
+        footer={
+          <div>
+            <Button label="Close" icon="pi pi-times" onClick={closeDeleteModal} className="p-button-text p-button-sm" />
+            <Button label="Delete" icon="pi pi-check" onClick={submitDeleteForm} className="p-button-sm" />
+          </div>
+        }
       >
         <div className="p-fluid">
           <div className="p-field">
-            <label htmlFor="id">ID</label>
+            <label htmlFor="student_id_modal">Student ID</label>
             <InputText
-              id="student_id"
-              name="student_id"
-              value={formData.student_id}
-              onChange={handleChange}
+              id="student_id_modal"
+              value={studentId}
+              onChange={(e) => setStudentId(e.target.value)}
+              placeholder="Enter Student ID"
             />
           </div>
-          <div className="p-field">
-            <label htmlFor="first_name">First Name</label>
-            <InputText
-              id="first_name"
-              name="first_name"
-              value={formData.first_name}
-              onChange={handleChange}
-            />
-          </div>
-          <div className="p-field">
-            <label htmlFor="last_name">Last Name</label>
-            <InputText
-              id="last_name"
-              name="last_name"
-              value={formData.last_name}
-              onChange={handleChange}
-            />
-          </div>
-          <div className="p-field">
-            <label htmlFor="math_score">Math Score</label>
-            <InputNumber
-              id="math_score"
-              name="math_score"
-              value={parseInt(formData.math_score)}
-              onValueChange={(e) => handleNumberChange(e, "math_score")}
-            />
-          </div>
-          <div className="p-field">
-            <label htmlFor="science_score">Science Score</label>
-            <InputNumber
-              id="science_score"
-              name="science_score"
-              value={parseInt(formData.science_score)}
-              onValueChange={(e) => handleNumberChange(e, "science_score")}
-            />
-          </div>
-          <div className="p-field">
-            <label htmlFor="english_score">English Score</label>
-            <InputNumber
-              id="english_score"
-              name="english_score"
-              value={parseInt(formData.english_score)}
-              onValueChange={(e) => handleNumberChange(e, "english_score")}
-            />
-          </div>
-          <Button label="Submit" onClick={handleSubmit} />
         </div>
       </Dialog>
-    </>
+    </div>
   );
-}
+};
 
-export default InsertModal;
+export default App;

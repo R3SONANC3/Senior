@@ -1,78 +1,54 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start; /* Align content at the top of the screen */
+  align-items: center;
+  min-height: 100vh;
+}
+
 .button-group {
+  display: flex;
+  justify-content: flex-end; /* Align buttons to the right */
+  width: 100%; /* Ensure the button group takes the full width */
   margin-bottom: 10px;
 }
 
 .button-group button {
   margin-right: 5px;
+  font-size: 0.9rem; /* Make buttons smaller */
+  padding: 5px 10px; /* Adjust padding for smaller buttons */
 }
 
 .table-container {
   border: 1px solid white;
   border-radius: 5px;
   overflow: auto;
-}
-
-.table {
-  width: 100%;
-  border-collapse: collapse;
-  background-color: white;
-  /* สีพื้นหลังของตาราง */
-  color: black;
-  /* เปลี่ยนสีตัวหนังสือในตารางเป็นสีดำ */
-}
-
-.table th,
-.table td {
-  border: 1px solid white;
-  padding: 8px;
-}
-
-.table th {
-  background-color: #f2f2f2;
-  font-weight: bold;
-  text-align: left;
-}
-
-.table tbody tr:nth-child(even) {
-  background-color: white;
-  /* สีพื้นหลังของแถวเลขคู่ */
-}
-
-.table tbody tr:hover {
-  background-color: #f2f2f2;
-  /* เปลี่ยนสีเมื่อโฮเวอร์แถว */
-}
-
-.container {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  /* Align content at the top of the screen */
-  align-items: center;
-  min-height: 100vh;
-}
-
-
-.button-group {
-  margin-bottom: 20px;
-}
-
-.table-container {
   width: 80%;
 }
 
 .table {
   width: 100%;
   border-collapse: collapse;
+  background-color: white; /* Table background color */
+  color: black; /* Text color */
 }
 
 .table th,
 .table td {
-  border: 1px solid #ddd;
+  border: 1px solid white;
   padding: 8px;
   text-align: left;
 }
 
 .table th {
   background-color: #f2f2f2;
+  font-weight: bold;
+}
+
+.table tbody tr:nth-child(even) {
+  background-color: white; /* Background color for even rows */
+}
+
+.table tbody tr:hover {
+  background-color: #f2f2f2; /* Hover effect */
 }
