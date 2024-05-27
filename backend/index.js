@@ -257,30 +257,6 @@ app.get('/queryData', (req, res) => {
   });
 });
 
-app.post('/insert_user', (req, res) => {
-  const userData = req.body;
-  const values = [
-    userData.oauth_provider,
-    userData.oauth_uid,
-    userData.first_name,
-    userData.last_name,
-    userData.email,
-    userData.picture
-  ];
-
-  connector.insert('users', values, (error, results) => {
-    if (error) {
-      res.status(500).json({
-        message: 'An error occurred while saving data in the database.'
-      });
-    } else {
-      res.status(200).json({
-        message: 'successfully created!'
-      });
-    }
-  });
-});
-
 app.listen(port, () => {
   console.log(`Server is running at senior-production-43fc.up.railway.app`);
 });

@@ -4,10 +4,10 @@ import "./DatabasePage.css";
 import "primereact/resources/themes/lara-light-indigo/theme.css";
 import "primereact/resources/primereact.min.css";
 import "primeicons/primeicons.css";
-import InsertModal from "./InsertModal";
 import UpdateModal from "./UpdateModal";
 import DeleteModal from "./DeleteModal";
 import QueryModal from "./QueryModal";
+import InsertModal from "./InsertModal";
 
 const DatabasePage = () => {
   const [data, setData] = useState([]);

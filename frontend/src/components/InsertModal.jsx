@@ -47,7 +47,7 @@ function InsertModal({}) {
     // Make the API call to insert data into the database
     axios
       .post(
-        "https://senior-project-production-336b.up.railway.app/create",
+        "https://senior-project-production-336b.up.railway.app/insertData",
         dataToSend
       )
       .then((response) => {
@@ -77,7 +77,7 @@ function InsertModal({}) {
 
   return (
     <>
-    <Button label="Insert" onClick={() => setVisible(true) } />
+      <Button icon="pi pi-plus" label="Insert" onClick={() => setVisible(true)} />
       <Dialog
         visible={visible}
         onHide={() => setVisible(false)}
