@@ -32,7 +32,7 @@ app.get("/", (req, res) => {
   res.send("Hello World!");
 });
 
-// use for get all data in table
+
 app.get('/getData', (req, res) => {
   connector.query('SELECT * FROM project.scorestudent', (err, results) => {
     if (err) {
@@ -51,8 +51,7 @@ app.put("/update/:id", async (req, res) => {
     math_score,
     science_score,
     english_score
-  } =
-  req.body;
+  } = req.body;
 
   if (
     !first_name ||
@@ -68,15 +67,10 @@ app.put("/update/:id", async (req, res) => {
 
   try {
     await new Promise((resolve, reject) => {
-      connector.update(
-        "project.scoreStudent", {
-          first_name: first_name,
-          last_name: last_name,
-          math_score: math_score,
-          science_score: science_score,
-          english_score: english_score,
-        },
-        `student_id=${studentId}`,
+      // ใช้คำสั่ง SQL UPDATE เพื่ออัปเดตข้อมูล
+      connector.query(
+        "UPDATE project.scorestudent SET first_name = ?, last_name = ?, math_score = ?, science_score = ?, english_score = ? WHERE student_id = ?",
+        [first_name, last_name, math_score, science_score, english_score, studentId],
         (err, result) => {
           if (err) {
             console.error("Error updating data:", err);
@@ -99,6 +93,7 @@ app.put("/update/:id", async (req, res) => {
     });
   }
 });
+
 
 app.delete("/delete/:id", async (req, res) => {
   const studentId = req.params.id;

@@ -34,7 +34,9 @@ const UpdateModal = ({ fetchData }) => {
 
   const handleSearch = () => {
     axios
-      .get(`https://senior-project-production-336b.up.railway.app/search/${studentId}`)
+      .get(
+        `https://senior-project-production-336b.up.railway.app/search/${studentId}`
+      )
       .then((response) => {
         console.log("Response from search:", response.data);
         if (response.data.length > 0) {
@@ -48,11 +50,19 @@ const UpdateModal = ({ fetchData }) => {
         alert("Failed to fetch student data");
       });
   };
-  
 
   const handleSubmit = () => {
     axios
-      .put(`https://senior-project-production-336b.up.railway.app/update/${formData.student_id}`, formData)
+      .put(
+        `https://senior-project-production-336b.up.railway.app/update/${formData.student_id}`,
+        {
+          first_name: formData.first_name,
+          last_name: formData.last_name,
+          math_score: formData.math_score,
+          science_score: formData.science_score,
+          english_score: formData.english_score,
+        }
+      )
       .then((response) => {
         console.log("Student updated successfully:", response.data);
         closeUpdateModal();
@@ -63,28 +73,42 @@ const UpdateModal = ({ fetchData }) => {
         alert("Failed to update student. Please try again later.");
       });
   };
-  
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     console.log("Name:", name, "Value:", value);
     setFormData({ ...formData, [name]: value });
   };
-  
 
   return (
     <div>
-      <Button label="Update Student" icon="pi pi-pencil" onClick={openUpdateModal} className="p-button-sm" />
-      
+      <Button
+        label="Update Student"
+        icon="pi pi-pencil"
+        onClick={openUpdateModal}
+        className="p-button-sm"
+      />
+
       <Dialog
         header="Update Student"
         visible={isUpdateModalOpen}
-        style={{ width: '400px' }}
+        style={{ width: "400px" }}
         modal
         onHide={closeUpdateModal}
         footer={
           <div>
-            <Button label="Close" icon="pi pi-times" onClick={closeUpdateModal} className="p-button-text p-button-sm" />
-            <Button label="Update" icon="pi pi-check" onClick={handleSubmit} className="p-button-sm" />
+            <Button
+              label="Close"
+              icon="pi pi-times"
+              onClick={closeUpdateModal}
+              className="p-button-text p-button-sm"
+            />
+            <Button
+              label="Update"
+              icon="pi pi-check"
+              onClick={handleSubmit}
+              className="p-button-sm"
+            />
           </div>
         }
       >
@@ -97,7 +121,12 @@ const UpdateModal = ({ fetchData }) => {
               onChange={(e) => setStudentId(e.target.value)}
               placeholder="Enter Student ID"
             />
-            <Button label="Search" icon="pi pi-search" onClick={handleSearch} className="p-button-sm" />
+            <Button
+              label="Search"
+              icon="pi pi-search"
+              onClick={handleSearch}
+              className="p-button-sm"
+            />
           </div>
           <div className="p-field">
             <label htmlFor="student_id">Student ID</label>
