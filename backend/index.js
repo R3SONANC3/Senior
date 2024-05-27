@@ -68,7 +68,7 @@ app.put("/update/:id", async (req, res) => {
   try {
     await new Promise((resolve, reject) => {
       connector.update(
-        "scoreStudent", {
+        "project.scoreStudent", {
           first_name: first_name,
           last_name: last_name,
           math_score: math_score,
