@@ -3,7 +3,7 @@ import { Dialog } from "primereact/dialog";
 import { Button } from "primereact/button";
 import { Dropdown } from "primereact/dropdown";
 import axios from "axios";
-import "./DatabasePage.css";
+
 
 const QueryModal = ({ fetchData }) => {
   const [isQueryModalOpen, setIsQueryModalOpen] = useState(false);
