@@ -25,6 +25,7 @@ const App = () => {
       });
       console.log(response.data);
       closeDeleteModal();
+      fetchData();
       // Reload the table data or refresh the page
       // fetchTableData();
     } catch (error) {

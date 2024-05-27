@@ -33,6 +33,7 @@ const QueryModal = ({}) => {
       .get(`https://senior-project-production-336b.up.railway.app/queryData?scoreType=${scoreType}&scoreValue=${scoreValue}`)
       .then((response) => {
         setQueryResults(response.data);
+        fetchData();
       })
       .catch((error) => {
         console.error("Error querying data:", error);

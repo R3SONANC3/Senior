@@ -52,6 +52,7 @@ function InsertModal({}) {
       )
       .then((response) => {
         console.log("Data successfully submitted:", response.data);
+        fetchData();
         // Optionally, handle the response (e.g., show a success message)
       })
       .catch((error) => {
