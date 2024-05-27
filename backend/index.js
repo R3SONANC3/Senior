@@ -356,4 +356,3 @@ app.listen(port, () => {
   console.log(`Server is running at senior-production-43fc.up.railway.app`);
 });
 
-module.exports = app
