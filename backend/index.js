@@ -152,7 +152,7 @@ app.get("/search/:id", async (req, res) => {
   }
 });
 
-app.post("/create", async (req, res) => {
+app.post("/insertData", async (req, res) => {
   const students = req.body;
 
   if (!Array.isArray(students) || students.length === 0) {
@@ -215,77 +215,6 @@ app.post("/create", async (req, res) => {
     });
   } catch (err) {
     console.error("Error creating students:", err);
-    return res.status(500).json({
-      message: "Internal Server Error"
-    });
-  }
-});
-
-
-app.post("/insertData", async (req, res) => {
-  const student = req.body;
-  if (!student) {
-    return res.status(400).json({
-      message: "No student data provided"
-    });
-  }
-
-  try {
-    const {
-      student_id,
-      first_name,
-      last_name,
-      math_score,
-      science_score,
-      english_score,
-    } = student;
-
-    if (
-      !student_id ||
-      !first_name ||
-      !last_name ||
-      !math_score ||
-      !science_score ||
-      !english_score
-    ) {
-      console.error("Missing data for student:", student);
-      return res
-        .status(400)
-        .json({
-          message: "Incomplete student data provided"
-        });
-    }
-
-    await new Promise((resolve, reject) => {
-      connector.insert(
-        "project.scoreStudent", {
-          student_id: student_id,
-          first_name: first_name,
-          last_name: last_name,
-          math_score: math_score,
-          science_score: science_score,
-          english_score: english_score,
-        },
-        (err, result) => {
-          if (err) {
-            console.error("Error inserting data:", err);
-            reject(err);
-          } else {
-            console.log(
-              "Inserted new data. Affected rows:",
-              result.affectedRows
-            );
-            resolve();
-          }
-        }
-      );
-    });
-
-    return res.status(201).json({
-      message: "Student successfully created!"
-    });
-  } catch (err) {
-    console.error("Error creating student:", err);
     return res.status(500).json({
       message: "Internal Server Error"
     });
