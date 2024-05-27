@@ -13,11 +13,11 @@ const connector = new MySQLConnector({
   user: 'root',
   database: 'project',
   password: '12345678',
-  port: 3306,
+  port: 3306, 
   waitForConnections: true,
   connectionLimit: 10,
   queueLimit: 0
-
+  
 });
 
 connector.connect(err => {
@@ -51,7 +51,8 @@ app.put("/update/:id", async (req, res) => {
     math_score,
     science_score,
     english_score
-  } = req.body;
+  } =
+  req.body;
 
   if (
     !first_name ||
@@ -354,3 +355,4 @@ app.post('/insert_user', (req, res) => {
 app.listen(port, () => {
   console.log(`Server is running at senior-production-43fc.up.railway.app`);
 });
+
