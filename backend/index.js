@@ -33,7 +33,7 @@ app.get("/", (req, res) => {
 });
 
 // use for get all data in table
-app.get('/getdata', (req, res) => {
+app.get('/getData', (req, res) => {
   connector.query('SELECT * FROM project.scorestudent', (err, results) => {
     if (err) {
       res.status(500).send(err);
