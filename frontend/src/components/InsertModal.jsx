@@ -77,7 +77,7 @@ function InsertModal({}) {
 
   return (
     <>
-      <Button icon="pi pi-plus" label="Insert" onClick={() => setVisible(true)} />
+      <Button icon="pi pi-plus" label="Insert Student" onClick={() => setVisible(true)} />
       <Dialog
         visible={visible}
         onHide={() => setVisible(false)}
