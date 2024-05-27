@@ -5,78 +5,95 @@ import { Button } from "primereact/button";
 import { InputText } from "primereact/inputtext";
 import { InputNumber } from "primereact/inputnumber";
 
-const InsertModal = ({ fetchData }) => {
-  const [isInsertModalOpen, setIsInsertModalOpen] = useState(false);
+function InsertModal({}) {
+  const [visible, setVisible] = useState(false);
   const [formData, setFormData] = useState({
     student_id: "",
     first_name: "",
     last_name: "",
-    math_score: "",
-    science_score: "",
-    english_score: "",
+    math_score: 0,
+    science_score: 0,
+    english_score: 0,
   });
-
-  const openInsertModal = () => {
-    setIsInsertModalOpen(true);
-  };
-
-  const closeInsertModal = () => {
-    setIsInsertModalOpen(false);
-    setFormData({
-      student_id: "",
-      first_name: "",
-      last_name: "",
-      math_score: "",
-      science_score: "",
-      english_score: "",
-    });
-  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
+  const handleNumberChange = (e, name) => {
+    setFormData({
+      ...formData,
+      [name]: e.value !== null ? e.value.toString() : "0",
+    });
+  };
+
   const handleSubmit = () => {
+    // Log form data before sending
+    console.log("Form Data to be Submitted:", formData);
+
+    // Adjust the formData keys to match the backend expectations
+    const dataToSend = [
+      {
+        student_id: formData.student_id,
+        first_name: formData.first_name,
+        last_name: formData.last_name,
+        math_score: parseInt(formData.math_score),
+        science_score: parseInt(formData.science_score),
+        english_score: parseInt(formData.english_score),
+      },
+    ];
+
+    // Make the API call to insert data into the database
     axios
-      .post("https://senior-project-production-336b.up.railway.app/insertData", formData)
+      .post(
+        "https://senior-project-production-336b.up.railway.app/create",
+        dataToSend
+      )
       .then((response) => {
-        console.log("Student inserted successfully:", response.data);
-        closeInsertModal();
-        fetchData();
+        console.log("Data successfully submitted:", response.data);
+        // Optionally, handle the response (e.g., show a success message)
       })
       .catch((error) => {
-        console.error("Error inserting student:", error);
-        alert("Failed to insert student. Please try again later.");
+        // Log the error response for debugging
+        console.error(
+          "Error submitting data:",
+          error.response ? error.response.data : error.message
+        );
+        // Optionally, handle the error (e.g., show an error message)
       });
+
+    // Reset the form and close the dialog
+    setFormData({
+      student_id: "",
+      first_name: "",
+      last_name: "",
+      math_score: 0,
+      science_score: 0,
+      english_score: 0,
+    });
+    setVisible(false);
   };
 
   return (
-    <div>
-      <Button label="Insert Student" icon="pi pi-plus" onClick={openInsertModal} className="p-button-sm" />
-      
+    <>
+    <Button label="Insert" onClick={() => setVisible(true) } />
       <Dialog
-        header="Insert Student"
-        visible={isInsertModalOpen}
-        style={{ width: '400px' }}
-        modal
-        onHide={closeInsertModal}
-        footer={
-          <div>
-            <Button label="Close" icon="pi pi-times" onClick={closeInsertModal} className="p-button-text p-button-sm" />
-            <Button label="Insert" icon="pi pi-check" onClick={handleSubmit} className="p-button-sm" />
-          </div>
-        }
+        visible={visible}
+        onHide={() => setVisible(false)}
+        style={{ width: "50vw" }}
+        header="Insert Data"
+        draggable={false}
+        dismissableMask
       >
         <div className="p-fluid">
           <div className="p-field">
-            <label htmlFor="student_id">Student ID</label>
+            <label htmlFor="id">ID</label>
             <InputText
               id="student_id"
               name="student_id"
               value={formData.student_id}
               onChange={handleChange}
-              placeholder="Enter Student ID"
             />
           </div>
           <div className="p-field">
@@ -86,7 +103,6 @@ const InsertModal = ({ fetchData }) => {
               name="first_name"
               value={formData.first_name}
               onChange={handleChange}
-              placeholder="Enter First Name"
             />
           </div>
           <div className="p-field">
@@ -96,43 +112,40 @@ const InsertModal = ({ fetchData }) => {
               name="last_name"
               value={formData.last_name}
               onChange={handleChange}
-              placeholder="Enter Last Name"
             />
           </div>
           <div className="p-field">
             <label htmlFor="math_score">Math Score</label>
-            <InputText
+            <InputNumber
               id="math_score"
               name="math_score"
-              value={formData.math_score}
-              onChange={handleChange}
-              placeholder="Enter Math Score"
+              value={parseInt(formData.math_score)}
+              onValueChange={(e) => handleNumberChange(e, "math_score")}
             />
           </div>
           <div className="p-field">
             <label htmlFor="science_score">Science Score</label>
-            <InputText
+            <InputNumber
               id="science_score"
               name="science_score"
-              value={formData.science_score}
-              onChange={handleChange}
-              placeholder="Enter Science Score"
+              value={parseInt(formData.science_score)}
+              onValueChange={(e) => handleNumberChange(e, "science_score")}
             />
           </div>
           <div className="p-field">
             <label htmlFor="english_score">English Score</label>
-            <InputText
+            <InputNumber
               id="english_score"
               name="english_score"
-              value={formData.english_score}
-              onChange={handleChange}
-              placeholder="Enter English Score"
+              value={parseInt(formData.english_score)}
+              onValueChange={(e) => handleNumberChange(e, "english_score")}
             />
           </div>
+          <Button label="Submit" onClick={handleSubmit} />
         </div>
       </Dialog>
-    </div>
+    </>
   );
-};
+}
 
 export default InsertModal;

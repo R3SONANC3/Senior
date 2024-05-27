@@ -5,7 +5,7 @@ import { Dropdown } from "primereact/dropdown";
 import axios from "axios";
 
 
-const QueryModal = ({ fetchData }) => {
+const QueryModal = ({}) => {
   const [isQueryModalOpen, setIsQueryModalOpen] = useState(false);
   const [scoreType, setScoreType] = useState("");
   const [scoreValue, setScoreValue] = useState("");
