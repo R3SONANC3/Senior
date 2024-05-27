@@ -14,7 +14,7 @@ function App() {
             // localStorage.setItem('userToken', tokenResponse.credential);
 
             // Redirect to DatabasePage
-            navigate('/database');
+            navigate('/');
         },
         onError: () => console.log("Login Failed"),
     });
@@ -31,7 +31,7 @@ function MainApp() {
         <Router>
             <Routes>
                 <Route path="/" element={<App />} />
-                <Route path="/database" element={<DatabasePage />} />
+                <Route path="/" element={<DatabasePage />} />
             </Routes>
         </Router>
     );
